@@ -1,0 +1,9 @@
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.rating-stars { display: inline-flex; gap: 1px; }
+.rating-num { font-weight: 600; color: var(--color-text); }
+.rating-count { color: var(--color-text-muted); }

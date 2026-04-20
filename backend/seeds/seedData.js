@@ -1,0 +1,288 @@
+const Product = require("../models/Product");
+const Device = require("../models/Device");
+const DeviceData = require("../models/DeviceData");
+
+// All 20 products matching frontend/src/data/products.ts exactly
+const products = [
+  {
+    id: "exhaust-fan-pro",
+    name: "Exhaust Fan Pro 200mm",
+    category: "Fans",
+    price: 89,
+    rating: 4.6,
+    reviewCount: 248,
+    image: "https://images.unsplash.com/photo-1587212805088-d5099d8b8d2c?w=600&q=80",
+    description: "High-efficiency 200mm exhaust fan engineered for kitchens and bathrooms. Whisper-quiet brushless motor with 3 speeds.",
+    specs: ["200mm diameter", "Brushless DC motor", "3 speed levels", "<35dB at low speed", "5-year warranty"],
+  },
+  {
+    id: "smart-fan-x1",
+    name: "SmartVent Fan X1",
+    category: "Fans",
+    price: 149,
+    rating: 4.8,
+    reviewCount: 412,
+    image: "https://images.unsplash.com/photo-1565374790561-71a4d3a4f6d4?w=600&q=80",
+    description: "Wi-Fi connected smart ventilation fan with auto-mode driven by AQI and humidity sensors.",
+    specs: ["Wi-Fi 2.4GHz", "Auto AQI control", "Schedule timer", "App + voice control", "Energy Star"],
+  },
+  {
+    id: "esp32-devkit",
+    name: "ESP32 DevKit V1",
+    category: "Controllers",
+    price: 12,
+    rating: 4.7,
+    reviewCount: 1832,
+    image: "https://images.unsplash.com/photo-1553406830-ef2513450d76?w=600&q=80",
+    description: "Powerful dual-core ESP32 module with Wi-Fi and Bluetooth. Perfect base for DIY ventilation control.",
+    specs: ["Dual-core 240MHz", "Wi-Fi + BLE", "30 GPIO", "USB-C", "Arduino + ESP-IDF compatible"],
+  },
+  {
+    id: "router-mesh-ax",
+    name: "Mesh Router AX1800",
+    category: "Networking",
+    price: 129,
+    rating: 4.5,
+    reviewCount: 564,
+    image: "https://images.unsplash.com/photo-1606904825846-f6af65b41b76?w=600&q=80",
+    description: "Wi-Fi 6 mesh router built for IoT homes. Handles 100+ smart devices with rock-solid connectivity.",
+    specs: ["Wi-Fi 6 (AX1800)", "100+ device capacity", "Dedicated IoT band", "WPA3", "Mesh-ready"],
+  },
+  {
+    id: "mq135-sensor",
+    name: "MQ135 Air Quality Sensor",
+    category: "Sensors",
+    price: 8,
+    rating: 4.3,
+    reviewCount: 921,
+    image: "https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=600&q=80",
+    description: "Detects NH3, NOx, alcohol, benzene, smoke and CO2. Analog + digital output.",
+    specs: ["Analog + digital", "Heater 5V", "Wide gas detection", "Compact PCB", "Arduino compatible"],
+  },
+  {
+    id: "temp-sensor-ds18b20",
+    name: "Temperature Sensor DS18B20",
+    category: "Sensors",
+    price: 5,
+    rating: 4.8,
+    reviewCount: 2103,
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+    description: "Waterproof 1-Wire digital temperature probe. +-0.5 C accuracy from -55 C to +125 C.",
+    specs: ["1-Wire interface", "+-0.5 C accuracy", "-55 to +125 C", "Waterproof probe", "1m cable"],
+  },
+  {
+    id: "humidity-sensor-dht22",
+    name: "Humidity Sensor DHT22",
+    category: "Sensors",
+    price: 9,
+    rating: 4.5,
+    reviewCount: 1487,
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?w=600&q=80",
+    description: "Combined temperature + humidity sensor with calibrated digital output.",
+    specs: ["0-100% RH", "+-2% RH accuracy", "Single-wire digital", "3.3-6V", "Pre-calibrated"],
+  },
+  {
+    id: "bme280",
+    name: "BME280 Environmental Sensor",
+    category: "Sensors",
+    price: 14,
+    rating: 4.7,
+    reviewCount: 876,
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af476?w=600&q=80",
+    description: "Pressure, temperature and humidity in a tiny I2C package. Industry standard for weather stations.",
+    specs: ["Pressure + temp + RH", "I2C / SPI", "0.18 uA sleep", "300-1100 hPa", "Tiny footprint"],
+  },
+  {
+    id: "co2-ndir",
+    name: "CO2 NDIR Sensor MH-Z19B",
+    category: "Sensors",
+    price: 32,
+    rating: 4.6,
+    reviewCount: 654,
+    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=600&q=80",
+    description: "True NDIR CO2 sensor for accurate indoor air quality monitoring up to 5000 ppm.",
+    specs: ["NDIR principle", "0-5000 ppm", "UART + PWM", "Auto baseline calibration", "5V powered"],
+  },
+  {
+    id: "pir-motion",
+    name: "PIR Motion Sensor HC-SR501",
+    category: "Sensors",
+    price: 4,
+    rating: 4.4,
+    reviewCount: 3210,
+    image: "https://images.unsplash.com/photo-1572177812156-58036aae439c?w=600&q=80",
+    description: "Detect human presence to trigger ventilation only when needed.",
+    specs: ["7m range", "120 detection", "Adjustable delay", "5-20V", "Digital output"],
+  },
+  {
+    id: "smart-vent-damper",
+    name: "Smart Vent Damper",
+    category: "Fans",
+    price: 79,
+    rating: 4.4,
+    reviewCount: 187,
+    image: "https://images.unsplash.com/photo-1604147706283-d7119b5b822c?w=600&q=80",
+    description: "Motorised damper with feedback. Open/close vents room-by-room based on occupancy.",
+    specs: ["Motorised", "Position feedback", "0-10V control", "Steel housing", "Multiple sizes"],
+  },
+  {
+    id: "smartvent-hub",
+    name: "SmartVent Central Hub",
+    category: "Controllers",
+    price: 199,
+    rating: 4.9,
+    reviewCount: 312,
+    image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=600&q=80",
+    description: "Central hub that orchestrates fans, dampers and sensors. Local-first, cloud-optional.",
+    specs: ["Quad-core ARM", "Zigbee + Wi-Fi + BLE", "Local automations", "REST + MQTT API", "PoE compatible"],
+  },
+  {
+    id: "esp32-cam",
+    name: "ESP32-CAM Module",
+    category: "Controllers",
+    price: 18,
+    rating: 4.3,
+    reviewCount: 942,
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af477?w=600&q=80",
+    description: "ESP32 with onboard camera for visual occupancy detection.",
+    specs: ["OV2640 camera", "MicroSD slot", "Wi-Fi + BLE", "Low power", "Arduino IDE support"],
+  },
+  {
+    id: "inline-duct-fan",
+    name: "Inline Duct Fan 150mm",
+    category: "Fans",
+    price: 119,
+    rating: 4.5,
+    reviewCount: 298,
+    image: "https://images.unsplash.com/photo-1581094289810-adf5d25690e3?w=600&q=80",
+    description: "High-flow inline duct fan for whole-home ventilation systems.",
+    specs: ["150mm duct", "550 m3/h airflow", "Energy efficient EC motor", "Quiet operation", "EU plug"],
+  },
+  {
+    id: "wifi-relay",
+    name: "Wi-Fi Smart Relay",
+    category: "Controllers",
+    price: 22,
+    rating: 4.6,
+    reviewCount: 765,
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af478?w=600&q=80",
+    description: "Wi-Fi relay to retrofit any AC fan with smart control. Works with SmartVent Hub.",
+    specs: ["10A relay", "230V AC", "Wi-Fi 2.4GHz", "MQTT + REST", "DIN-rail"],
+  },
+  {
+    id: "switch-poe",
+    name: "8-Port PoE Switch",
+    category: "Networking",
+    price: 89,
+    rating: 4.5,
+    reviewCount: 421,
+    image: "https://images.unsplash.com/photo-1606904825846-f6af65b41b77?w=600&q=80",
+    description: "Gigabit PoE+ switch to power and connect IoT controllers across your home.",
+    specs: ["8 PoE+ ports", "120W budget", "Gigabit", "Fanless", "VLAN support"],
+  },
+  {
+    id: "lora-gateway",
+    name: "LoRa IoT Gateway",
+    category: "Networking",
+    price: 159,
+    rating: 4.4,
+    reviewCount: 138,
+    image: "https://images.unsplash.com/photo-1606904825846-f6af65b41b78?w=600&q=80",
+    description: "Long-range LoRa gateway for outdoor air-quality nodes.",
+    specs: ["LoRaWAN 1.0.3", "8-channel", "Up to 10km range", "Ethernet + Wi-Fi", "Outdoor rated"],
+  },
+  {
+    id: "particulate-pm25",
+    name: "PM2.5 Particulate Sensor",
+    category: "Sensors",
+    price: 28,
+    rating: 4.6,
+    reviewCount: 489,
+    image: "https://images.unsplash.com/photo-1581092335397-9583eb92d233?w=600&q=80",
+    description: "Laser-based PM1.0 / PM2.5 / PM10 sensor for accurate dust monitoring.",
+    specs: ["Laser scattering", "PM1.0/2.5/10", "UART output", "<2W power", "Long lifespan"],
+  },
+  {
+    id: "vent-controller-pro",
+    name: "Vent Controller Pro",
+    category: "Controllers",
+    price: 249,
+    rating: 4.8,
+    reviewCount: 156,
+    image: "https://images.unsplash.com/photo-1558002038-1055907df828?w=600&q=80",
+    description: "Wall-mount touchscreen controller for whole-home ventilation zones.",
+    specs: ["5\" touchscreen", "Zone control", "Schedule + auto modes", "PoE", "Wall mount"],
+  },
+  {
+    id: "outdoor-aqi-station",
+    name: "Outdoor AQI Station",
+    category: "Sensors",
+    price: 219,
+    rating: 4.7,
+    reviewCount: 92,
+    image: "https://images.unsplash.com/photo-1581092335397-9583eb92d234?w=600&q=80",
+    description: "Weatherproof outdoor station measuring PM, CO2, NO2, temperature and humidity.",
+    specs: ["IP65 housing", "Multi-gas", "Solar option", "LoRa + Wi-Fi", "Wall/pole mount"],
+  },
+];
+
+// Devices matching frontend/src/data/dashboard.ts exactly
+const devices = [
+  { id: "d1", name: "SmartVent Fan X1", location: "Living Room", type: "Fan", status: "online", lastSeen: "1 min ago" },
+  { id: "d2", name: "MQ135 Sensor", location: "Kitchen", type: "AQ Sensor", status: "online", lastSeen: "30 sec ago" },
+  { id: "d3", name: "DHT22", location: "Bedroom", type: "Temp/Humidity", status: "online", lastSeen: "2 min ago" },
+  { id: "d4", name: "Inline Duct Fan", location: "Bathroom", type: "Fan", status: "offline", lastSeen: "3 hours ago" },
+  { id: "d5", name: "CO2 NDIR", location: "Office", type: "CO2 Sensor", status: "online", lastSeen: "1 min ago" },
+  { id: "d6", name: "Smart Vent Damper", location: "Hallway", type: "Damper", status: "online", lastSeen: "5 min ago" },
+];
+
+// Generate 24h time series matching frontend/src/data/dashboard.ts pattern
+function generateTimeSeries() {
+  const data = [];
+  for (let i = 0; i < 24; i++) {
+    const hour = i.toString().padStart(2, "0") + ":00";
+    data.push({
+      time: hour,
+      aqi: Math.round(35 + Math.sin(i / 3) * 20 + Math.random() * 10),
+      temperature: Math.round((21 + Math.sin(i / 4) * 3 + Math.random()) * 10) / 10,
+      humidity: Math.round(45 + Math.cos(i / 5) * 10 + Math.random() * 5),
+    });
+  }
+  return data;
+}
+
+const seedDatabase = async () => {
+  try {
+    // Seed products if empty
+    const productCount = await Product.countDocuments();
+    if (productCount === 0) {
+      await Product.insertMany(products);
+      console.log("[SEED] Inserted 20 products");
+    } else {
+      console.log(`[SEED] Products already exist (${productCount}), skipping`);
+    }
+
+    // Seed devices if empty
+    const deviceCount = await Device.countDocuments();
+    if (deviceCount === 0) {
+      await Device.insertMany(devices);
+      console.log("[SEED] Inserted 6 devices");
+    } else {
+      console.log(`[SEED] Devices already exist (${deviceCount}), skipping`);
+    }
+
+    // Seed device data if empty
+    const dataCount = await DeviceData.countDocuments();
+    if (dataCount === 0) {
+      const timeSeries = generateTimeSeries();
+      await DeviceData.insertMany(timeSeries);
+      console.log("[SEED] Inserted 24 time-series data points");
+    } else {
+      console.log(`[SEED] Device data already exists (${dataCount}), skipping`);
+    }
+  } catch (error) {
+    console.error("[SEED] Error:", error.message);
+  }
+};
+
+module.exports = seedDatabase;

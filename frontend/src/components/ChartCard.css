@@ -1,0 +1,21 @@
+.chart-card {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.chart-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+.chart-card-head h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.chart-card-head span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.chart-card-body { width: 100%; height: 260px; }
