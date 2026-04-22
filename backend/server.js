@@ -17,7 +17,10 @@ const deviceRoutes = require("./routes/deviceRoutes");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  credentials: true
+}));
 app.use(express.json());
 
 // Request logging
@@ -52,16 +55,20 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  // Connect to MongoDB (auto-creates DB if not exists)
-  await connectDB();
+  try {
+    // Connect to MongoDB (auto-creates DB if not exists)
+    await connectDB();
 
-  // Auto-seed data if collections are empty
-  await seedDatabase();
+    // Auto-seed data if collections are empty
+    await seedDatabase();
+  } catch (error) {
+    console.error("Failed to initialize database:", error.message);
+    process.exit(1);
+  }
 
   app.listen(PORT, () => {
     console.log(`\n========================================`);
     console.log(`  SmartVent API running on port ${PORT}`);
-    console.log(`  http://localhost:${PORT}/api/health`);
     console.log(`========================================\n`);
   });
 };

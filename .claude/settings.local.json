@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx -p typescript tsc --noEmit)",
+      "Bash(npm run:*)",
+      "Bash(npx vite:*)",
+      "Bash(sed 's/\\\\.tsx$//')",
+      "Bash(sed 's/\\\\.ts$//')",
+      "Bash(mv frontend:*)",
+      "Bash(npm create:*)",
+      "Bash(rm -rf src/assets src/App.css src/App.jsx src/index.css)",
+      "Bash(mkdir -p src/components src/data src/hooks src/lib src/pages src/styles)",
+      "Bash(cp frontend_old/src/styles/global.css frontend/src/styles/global.css)",
+      "Bash(cp frontend_old/src/styles/Home.css frontend/src/styles/Home.css)",
+      "Bash(cp frontend_old/src/styles/Products.css frontend/src/styles/Products.css)",
+      "Bash(cp frontend_old/src/styles/ProductDetail.css frontend/src/styles/ProductDetail.css)",
+      "Bash(cp frontend_old/src/styles/Cart.css frontend/src/styles/Cart.css)",
+      "Bash(cp frontend_old/src/components/Navbar.css frontend/src/components/Navbar.css)",
+      "Bash(cp frontend_old/src/components/Footer.css frontend/src/components/Footer.css)",
+      "Bash(cp frontend_old/src/components/ProductCard.css frontend/src/components/ProductCard.css)",
+      "Bash(cp frontend_old/src/components/ChartCard.css frontend/src/components/ChartCard.css)",
+      "Bash(cp frontend_old/src/components/KpiCard.css frontend/src/components/KpiCard.css)",
+      "Bash(npm uninstall:*)",
+      "Bash(rm:*)",
+      "Bash(node server.js)",
+      "Bash(curl -s http://localhost:5000/api/health)",
+      "Bash(curl -s http://localhost:5000/api/products)",
+      "Bash(curl:*)",
+      "Bash(pkill -f \"node server.js\")",
+      "Bash(pkill -f \"vite\")",
+      "Bash(node -e \"process.stdin.on\\('data',d=>{const r=JSON.parse\\(d\\);console.log\\('Products:',r.data.length,'items'\\)}\\)\")",
+      "Bash(netstat -ano)",
+      "Bash(taskkill:*)"
+    ]
+  }
+}
