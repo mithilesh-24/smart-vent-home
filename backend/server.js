@@ -1,11 +1,23 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 const seedDatabase = require("./seeds/seedData");
 
 // Load env vars
 dotenv.config();
+
+// Verify essential environment variables
+const requiredEnv = ["MONGO_URI", "JWT_SECRET"];
+const missingEnv = requiredEnv.filter(env => !process.env[env]);
+
+if (missingEnv.length > 0) {
+  console.warn(`\n[WARNING] Missing environment variables: ${missingEnv.join(", ")}`);
+  console.warn("The application may not function correctly without these variables.\n");
+} else {
+  console.log("\n[SUCCESS] Essential environment variables verified.\n");
+}
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
@@ -38,7 +50,15 @@ app.use("/api/device", deviceRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
-  res.json({ success: true, data: { status: "OK", timestamp: new Date().toISOString() } });
+  res.json({ 
+    success: true, 
+    data: { 
+      status: "OK", 
+      timestamp: new Date().toISOString(),
+      database: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
+      environment: process.env.NODE_ENV || "development"
+    } 
+  });
 });
 
 // 404 handler
@@ -56,19 +76,24 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
-    // Connect to MongoDB (auto-creates DB if not exists)
-    await connectDB();
-
-    // Auto-seed data if collections are empty
-    await seedDatabase();
+    // Connect to MongoDB
+    const dbConnected = await connectDB();
+    
+    if (dbConnected) {
+      // Auto-seed data if collections are empty
+      await seedDatabase();
+    } else {
+      console.warn("[WARN] Starting server without database connection...");
+    }
   } catch (error) {
-    console.error("Failed to initialize database:", error.message);
-    process.exit(1);
+    console.error("Critical failure during initialization:", error.message);
+    // Still not exiting as per user request to keep backend "running"
   }
 
   app.listen(PORT, () => {
     console.log(`\n========================================`);
     console.log(`  SmartVent API running on port ${PORT}`);
+    console.log(`  Health Check: http://localhost:${PORT}/api/health`);
     console.log(`========================================\n`);
   });
 };

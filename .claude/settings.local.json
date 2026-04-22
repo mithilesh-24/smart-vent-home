@@ -36,7 +36,11 @@
       "Bash(taskkill:*)",
       "Bash(find \"D:\\\\Project\\\\FSD\\\\MINI PROJECT\\\\frontend\\\\src\" -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" \\\\\\) -exec grep -l \"image\\\\|product\" {} \\\\;)",
       "Bash(grep -E \"\\\\.\\(js|jsx|json|css\\)$\")",
-      "Bash(node -e ':*)"
+      "Bash(node -e ':*)",
+      "Bash(npm list:*)",
+      "Bash(npx railway:*)",
+      "Bash(railway version:*)",
+      "Bash(railway:*)"
     ]
   }
 }
