@@ -33,7 +33,10 @@
       "Bash(pkill -f \"vite\")",
       "Bash(node -e \"process.stdin.on\\('data',d=>{const r=JSON.parse\\(d\\);console.log\\('Products:',r.data.length,'items'\\)}\\)\")",
       "Bash(netstat -ano)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(find \"D:\\\\Project\\\\FSD\\\\MINI PROJECT\\\\frontend\\\\src\" -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" \\\\\\) -exec grep -l \"image\\\\|product\" {} \\\\;)",
+      "Bash(grep -E \"\\\\.\\(js|jsx|json|css\\)$\")",
+      "Bash(node -e ':*)"
     ]
   }
 }
