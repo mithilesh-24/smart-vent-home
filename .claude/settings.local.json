@@ -40,7 +40,9 @@
       "Bash(npm list:*)",
       "Bash(npx railway:*)",
       "Bash(railway version:*)",
-      "Bash(railway:*)"
+      "Bash(railway:*)",
+      "WebFetch(domain:smart-vent-home-production.up.railway.app)",
+      "Bash(nslookup:*)"
     ]
   }
 }
